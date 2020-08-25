@@ -23,6 +23,8 @@ def main(args):
     print('directory:%s' % dirpath)
     eng_path = os.path.join(dirpath, 'eng.tnd')
 
+    lines.append("자막은 번역기를 통해 생성했습니다.")
+    lines.append("매끄럽지 않아도 이해 부탁드려요. 🙏")
     # ko -> en
     translations = translator.translate(lines, language_code='en',
                                         filename=eng_path)
@@ -38,12 +40,10 @@ def main(args):
     for row in df.iterrows():
         _, code, kor_name = row[1]
         print(code, kor_name)
-        translated = translator.translate(translations, dest=code)
+        translated = translator.translate(translations, src='en', dest=code)
         print([x.text for x in translated])
         results.append(kor_name + '\n')
         results.append('\n'.join([x.text for x in translated]) + '\n\n')
-    results.append("자막은 번역기를 통해 생성했습니다.\n")
-    results.append("매끄럽지 않아도 이해 부탁드려요. 🙏")
 
     with open(os.path.join(dirpath, 'tnd.preprocessed'), 'w') as file:
         file.writelines(results)

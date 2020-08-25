@@ -20,4 +20,4 @@ echo $LANG
 
 python srt_translator.py --input ./data/$1/$1_SRT_Korean.srt --lang $LANG
 python tnd_translator.py --input ./data/$1/tnd --lang $LANG
-rm eng.srt
+# rm eng.srt

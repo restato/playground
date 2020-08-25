@@ -7,14 +7,15 @@ from utils import LANGCODES
 from googletrans import Translator
 
 
-def srt_translator(subs, language_code, filename):
+def srt_translator(subs, src, language_code, filename):
     print('processing %s...' % language_code)
     text_list = []
     for sub in subs:
         text_list.append(sub.text)
 
     translator = Translator()
-    translations = translator.translate(text_list, dest=language_code)
+    translations = translator.translate(
+        text_list, src=src, dest=language_code)
     # for translation in translations:
     # print(translation.origin, ' -> ', translation.text)
 
@@ -36,7 +37,7 @@ def main(args):
     dirpath = ('/').join(args.input.split('/')[:-1])
     print('directory:%s' % dirpath)
     eng_sub_path = os.path.join(dirpath, 'eng.srt')
-    srt_translator(subs, language_code='en',
+    srt_translator(subs, src='ko', language_code='en',
                    filename=eng_sub_path)
     subs = pysrt.open(eng_sub_path)
     for sub in subs[:3]:
@@ -49,8 +50,8 @@ def main(args):
     for row in df.iterrows():
         subs = pysrt.open(eng_sub_path)
         _, code, kor_name = row[1]
-        srt_translator(subs, language_code=code, filename=os.path.join(
-            dirpath, code + '_' + kor_name + '.srt'))
+        srt_translator(subs, src='en', language_code=code, filename=os.path.join(
+            dirpath, kor_name + '_' + code + '.srt'))
 
 
 if __name__ == "__main__":
